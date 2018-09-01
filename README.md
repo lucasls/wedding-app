@@ -1,4 +1,4 @@
-# Wedding Online Invite - Backend
+# Wedding Invite - Backend
 
 The backend for my Wedding's online invite
 
