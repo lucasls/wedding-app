@@ -31,28 +31,10 @@ class GsonDIModule {
     @Provides
     @Singleton
     fun gson() = Gson()
-
-    @Provides
-    @Singleton
-    @Named("facebookGson")
-    fun facebookGson() = GsonBuilder().apply {
-        setFacebookSettings()
-    }.create()
 }
 
 @Module
 class HttpClientDIModule {
-    @Provides
-    @Singleton
-    @Named("facebookHttpClient")
-    fun facebookHttpClient() = HttpClient(Apache) {
-        install(JsonFeature) {
-            serializer = GsonSerializer {
-                setFacebookSettings()
-            }
-        }
-    }
-
     @Provides
     @Singleton
     fun httpClient() = HttpClient(Apache) {

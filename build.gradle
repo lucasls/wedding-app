@@ -54,9 +54,6 @@ dependencies {
     // Gson
     compile "com.github.salomonbrys.kotson:kotson:2.5.0"
 
-    // Application
-    compile project(':domain')
-
     // Logs
     compile 'org.slf4j:slf4j-jdk14:1.7.25'
     compile 'io.github.microutils:kotlin-logging:1.5.4'
