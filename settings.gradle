@@ -1,3 +1,2 @@
 rootProject.name = 'wedding-app-backend'
-include 'domain'
 

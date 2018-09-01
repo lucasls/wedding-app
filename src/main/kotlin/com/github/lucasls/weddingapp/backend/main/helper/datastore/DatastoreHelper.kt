@@ -26,6 +26,11 @@ fun Datastore.queryOne(gqlQuery: String, builder: GqlQuery.Builder<Entity>.() ->
     }
 }
 
+fun Datastore.query(gqlQuery: String, builder: GqlQuery.Builder<Entity>.() -> Unit): Iterable<Entity> {
+    return run(gqlQuery, builder)
+        .let { it.asSequence().asIterable() }
+}
+
 fun Datastore.get(keyFactory: KeyFactory, keyValue: String): Entity {
     return get(keyFactory.newKey(keyValue))
 }
@@ -33,6 +38,20 @@ fun Datastore.get(keyFactory: KeyFactory, keyValue: String): Entity {
 fun KeyFactory.newEntity(keyValue: String, builder: Entity.Builder.() -> Unit): Entity {
     return newKey(keyValue).newEntity(builder)
 }
+
+fun Entity.Builder.setValue(name: String, value: String?) = value?.let { set(name, it) }
+
+fun Entity.Builder.setValue(name: String, value: List<String>) = value
+    .map { StringValue.of(it) }
+    .let { set("name", it) }
+
+fun Entity.getStringOrNull(key: String): String? =
+    Unit.takeIf { contains(key) }
+        ?.let { getString(key) }
+
+fun Entity.getBooleanOrNull(key: String): Boolean? =
+    Unit.takeIf { contains(key) }
+        ?.let { getBoolean(key) }
 
 fun Key.newEntity(builder: Entity.Builder.() -> Unit): Entity {
     return Entity.newBuilder(this).apply(builder).build()

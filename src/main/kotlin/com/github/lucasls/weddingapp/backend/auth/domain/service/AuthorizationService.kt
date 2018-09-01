@@ -2,10 +2,11 @@ package com.github.lucasls.weddingapp.backend.auth.domain.service
 
 import com.github.lucasls.weddingapp.backend.auth.domain.model.User
 import com.github.lucasls.weddingapp.backend.auth.domain.model.UserPermission
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AuthorizationService {
+class AuthorizationService @Inject constructor() {
 
     companion object {
         val allowedFacebookFriends = setOf("TODEFINE1", "TODEFINE2") //FIXME get real IDS

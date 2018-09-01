@@ -2,6 +2,7 @@ package com.github.lucasls.weddingapp.backend.auth.domain.repository
 
 import com.github.lucasls.weddingapp.backend.auth.domain.model.FacebookUserData
 import com.github.lucasls.weddingapp.backend.main.properties.WeddingAppProperties
+import com.github.lucasls.weddingapp.backend.main.repository.ConfigRepository
 import com.google.gson.JsonObject
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -16,7 +17,7 @@ import com.google.gson.Gson
 
 @Singleton
 class FacebookAuthRepository @Inject constructor(
-    properties: WeddingAppProperties,
+    private val configRepository: ConfigRepository,
     @Named("facebookHttpClient")
     private val httpClient: HttpClient,
     @Named("facebookGson")
@@ -25,23 +26,24 @@ class FacebookAuthRepository @Inject constructor(
 
     private val log = KotlinLogging.logger {}
 
-    private val appId = properties.facebook.appId
-    private val appSecret = properties.facebook.appSecret
-
     suspend fun appToken(): String {
         val res: JsonObject = httpClient.get(
-            "https://graph.facebook.com/oauth/access_token?client_id=$appId&client_secret=$appSecret&grant_type=client_credentials")
+            "https://graph.facebook.com/oauth/access_token?client_id=${apiId()}&client_secret=${appSecret()}&grant_type=client_credentials")
 
         return res["access_token"].asString
     }
+
+    private fun apiId(): String = configRepository["facebookAppId"]!!
+
+    private fun appSecret(): String = configRepository["facebookAppSecret"]!!
 
     suspend fun exchangeToken(accessToken: String): String? {
 
         val res: JsonObject = httpClient.get(url {
             takeFrom("https://graph.facebook.com/oauth/access_token")
 
-            parameters.append("client_id", appId)
-            parameters.append("client_secret", appSecret)
+            parameters.append("client_id", apiId())
+            parameters.append("client_secret", appSecret())
             parameters.append("grant_type", "fb_exchange_token")
             parameters.append("fb_exchange_token", accessToken)
         })

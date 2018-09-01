@@ -4,26 +4,18 @@ import com.github.lucasls.weddingapp.backend.main.helper.datastore.get
 import com.github.lucasls.weddingapp.backend.main.helper.datastore.newEntity
 import com.github.lucasls.weddingapp.backend.main.helper.datastore.newGqlQuery
 import com.github.lucasls.weddingapp.backend.main.helper.datastore.newKeyFactory
+import com.github.lucasls.weddingapp.test.helper.DatastoreITestBase
+import com.github.lucasls.weddingapp.test.helper.IntegrationTest
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper
 import com.google.cloud.datastore.DatastoreOptions
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.junit.experimental.categories.Category
 
-
-class DatastoreITest {
-    private val helper = LocalServiceTestHelper(LocalDatastoreServiceTestConfig())
-
-    @Before
-    fun setUp() {
-        helper.setUp()
-    }
-
-    @After
-    fun tearDown() {
-        helper.tearDown()
-    }
+@Category(IntegrationTest::class)
+class DatastoreITest : DatastoreITestBase() {
 
     @Test
     fun name() {

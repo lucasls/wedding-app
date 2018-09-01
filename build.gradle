@@ -76,9 +76,32 @@ dependencies {
     testCompile 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-alpha04'
 }
 
+test {
+    useJUnit {
+        excludeCategories "com.github.lucasls.weddingapp.test.helper.IntegrationTest"
+    }
+}
+
+task integrationTest(type: Test) {
+
+    group = 'verification'
+    useJUnit {
+        includeCategories "com.github.lucasls.weddingapp.test.helper.IntegrationTest"
+    }
+
+}
+
 appengine {
     run {
         jvmFlags = ['-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005', "-Dappengine.fullscan.seconds=5"]
+        environment = [
+                'GOOGLE_CLOUD_PROJECT'        : 'wedding-app-lu-e-ni',
+                'DATASTORE_DATASET'           : 'wedding-app-lu-e-ni',
+//                'DATASTORE_EMULATOR_HOST'     : 'localhost:8081',
+//                'DATASTORE_EMULATOR_HOST_PATH': 'localhost:8081/datastore',
+//                'DATASTORE_PROJECT_ID'        : 'wedding-app-lu-e-ni',
+
+        ]
     }
 }
 

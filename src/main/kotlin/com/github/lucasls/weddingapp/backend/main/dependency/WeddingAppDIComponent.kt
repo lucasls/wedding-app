@@ -21,13 +21,13 @@ private fun GsonBuilder.setFacebookSettings() {
 }
 
 @Module
-class KtorApplicationProvider(private val ktorApplication: Application) {
+class KtorApplicationDIModule(private val ktorApplication: Application) {
     @Provides
     fun ktorApplication() = ktorApplication
 }
 
 @Module
-class GsonProvider {
+class GsonDIModule {
     @Provides
     @Singleton
     fun gson() = Gson()
@@ -41,7 +41,7 @@ class GsonProvider {
 }
 
 @Module
-class HttpClientProvider {
+class HttpClientDIModule {
     @Provides
     @Singleton
     @Named("facebookHttpClient")
@@ -63,7 +63,7 @@ class HttpClientProvider {
 }
 
 @Module
-class DatastoreProvider {
+class DatastoreDIModule {
     @Provides
     @Singleton
     fun datatore() = DatastoreOptions.getDefaultInstance().getService();
@@ -71,11 +71,11 @@ class DatastoreProvider {
 
 @Singleton
 @Component(modules = [
-    KtorApplicationProvider::class,
-    HttpClientProvider::class,
-    GsonProvider::class,
-    DatastoreProvider::class
+    KtorApplicationDIModule::class,
+    HttpClientDIModule::class,
+    GsonDIModule::class,
+    DatastoreDIModule::class
 ])
-interface DependencyResolver {
+interface WeddingAppDIComponent {
     fun weddingAppConfig(): WeddingAppConfig
 }
